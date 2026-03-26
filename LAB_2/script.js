@@ -4,8 +4,6 @@ let a = '';
 let b = '';
 let expressionResult = '';
 let selectedOperation = null;
-let lastResult = 0; // Для накапливаемых операций
-let accumulator = 0; // Для M+ и M-
 
 
 const outputElement = document.getElementById("result");
@@ -19,18 +17,43 @@ function updateDisplay(value) {
 
 function onDigitButtonClicked(digit) {
     if (!selectedOperation) {
+
+        if (digit === '0' && a === '0') {
+            return;
+        }
+        if (digit === '0' && a === '') {
+            a = '0';
+            updateDisplay(a);
+            return;
+        }
         if ((digit != '.') || (digit == '.' && !a.includes(digit))) {
             a += digit;
+
+            if (a.startsWith('0') && a.length > 1 && !a.startsWith('0.')) {
+                a = a.replace(/^0+/, '');
+                if (a === '' || a === '.') a = '0';
+            }
         }
         updateDisplay(a);
     } else {
+        if (digit === '0' && b === '0') {
+            return;
+        }
+        if (digit === '0' && b === '') {
+            b = '0';
+            updateDisplay(b);
+            return;
+        }
         if ((digit != '.') || (digit == '.' && !b.includes(digit))) {
             b += digit;
-            updateDisplay(b);
+            if (b.startsWith('0') && b.length > 1 && !b.startsWith('0.')) {
+                b = b.replace(/^0+/, '');
+                if (b === '' || b === '.') b = '0';
+            }
         }
+        updateDisplay(b);
     }
 }
-
 
 digitButtons.forEach(button => {
     button.onclick = function() {
@@ -39,12 +62,21 @@ digitButtons.forEach(button => {
     }
 });
 
-
 document.getElementById("btn_digit_000").onclick = function() {
     if (!selectedOperation) {
+        if (a === '' || a === '0') {
+            a = '0';
+            updateDisplay(a);
+            return;
+        }
         a += '000';
         updateDisplay(a);
     } else {
+        if (b === '' || b === '0') {
+            b = '0';
+            updateDisplay(b);
+            return;
+        }
         b += '000';
         updateDisplay(b);
     }
@@ -54,38 +86,58 @@ document.getElementById("btn_digit_000").onclick = function() {
 document.getElementById("btn_op_backspace").onclick = function() {
     if (!selectedOperation && a.length > 0) {
         a = a.slice(0, -1);
-        updateDisplay(a || '0');
+        if (a === '' || a === '-') a = '0';
+        updateDisplay(a);
     } else if (selectedOperation && b.length > 0) {
         b = b.slice(0, -1);
-        updateDisplay(b || '0');
+        if (b === '' || b === '-') b = '0';
+        updateDisplay(b);
     }
 };
 
 
 document.getElementById("btn_op_mult").onclick = function() {
     if (a === '') return;
+    if (a !== '0') {
+        a = a.replace(/^0+/, '');
+        if (a === '' || a === '.') a = '0';
+    }
     selectedOperation = 'x';
 };
 document.getElementById("btn_op_plus").onclick = function() {
     if (a === '') return;
+    if (a !== '0') {
+        a = a.replace(/^0+/, '');
+        if (a === '' || a === '.') a = '0';
+    }
     selectedOperation = '+';
 };
 document.getElementById("btn_op_minus").onclick = function() {
     if (a === '') return;
+    if (a !== '0') {
+        a = a.replace(/^0+/, '');
+        if (a === '' || a === '.') a = '0';
+    }
     selectedOperation = '-';
 };
 document.getElementById("btn_op_div").onclick = function() {
     if (a === '') return;
+    if (a !== '0') {
+        a = a.replace(/^0+/, '');
+        if (a === '' || a === '.') a = '0';
+    }
     selectedOperation = '/';
 };
 
 
 document.getElementById("btn_op_sign").onclick = function() {
     if (!selectedOperation && a !== '') {
-        a = (Number(a) * -1).toString();
+        let num = Number(a);
+        a = (num * -1).toString();
         updateDisplay(a);
     } else if (selectedOperation && b !== '') {
-        b = (Number(b) * -1).toString();
+        let num = Number(b);
+        b = (num * -1).toString();
         updateDisplay(b);
     }
 };
@@ -93,10 +145,14 @@ document.getElementById("btn_op_sign").onclick = function() {
 
 document.getElementById("btn_op_percent").onclick = function() {
     if (!selectedOperation && a !== '') {
-        a = (Number(a) / 100).toString();
+        let num = parseFloat(a);
+        let result = num / 100;
+        a = parseFloat(result.toFixed(15)).toString();
         updateDisplay(a);
     } else if (selectedOperation && b !== '') {
-        b = (Number(b) / 100).toString();
+        let num = parseFloat(b);
+        let result = num / 100;
+        b = parseFloat(result.toFixed(15)).toString();
         updateDisplay(b);
     }
 };
@@ -104,21 +160,39 @@ document.getElementById("btn_op_percent").onclick = function() {
 
 document.getElementById("btn_op_sqrt").onclick = function() {
     if (!selectedOperation && a !== '') {
-        a = Math.sqrt(Number(a)).toString();
-        updateDisplay(a);
+        let num = Number(a);
+        if (num >= 0) {
+            a = Math.sqrt(num).toString();
+            updateDisplay(a);
+        } else {
+            updateDisplay('Ошибка');
+            setTimeout(() => {
+                updateDisplay(a);
+            }, 1000);
+        }
     } else if (selectedOperation && b !== '') {
-        b = Math.sqrt(Number(b)).toString();
-        updateDisplay(b);
+        let num = Number(b);
+        if (num >= 0) {
+            b = Math.sqrt(num).toString();
+            updateDisplay(b);
+        } else {
+            updateDisplay('Ошибка');
+            setTimeout(() => {
+                updateDisplay(b);
+            }, 1000);
+        }
     }
 };
 
 
 document.getElementById("btn_op_square").onclick = function() {
     if (!selectedOperation && a !== '') {
-        a = (Number(a) * Number(a)).toString();
+        let num = Number(a);
+        a = (num * num).toString();
         updateDisplay(a);
     } else if (selectedOperation && b !== '') {
-        b = (Number(b) * Number(b)).toString();
+        let num = Number(b);
+        b = (num * num).toString();
         updateDisplay(b);
     }
 };
@@ -136,11 +210,27 @@ function factorial(n) {
 
 document.getElementById("btn_op_fact").onclick = function() {
     if (!selectedOperation && a !== '') {
-        a = factorial(Number(a)).toString();
-        updateDisplay(a);
+        let num = Number(a);
+        if (num >= 0 && Number.isInteger(num)) {
+            a = factorial(num).toString();
+            updateDisplay(a);
+        } else {
+            updateDisplay('Ошибка');
+            setTimeout(() => {
+                updateDisplay(a);
+            }, 1000);
+        }
     } else if (selectedOperation && b !== '') {
-        b = factorial(Number(b)).toString();
-        updateDisplay(b);
+        let num = Number(b);
+        if (num >= 0 && Number.isInteger(num)) {
+            b = factorial(num).toString();
+            updateDisplay(b);
+        } else {
+            updateDisplay('Ошибка');
+            setTimeout(() => {
+                updateDisplay(b);
+            }, 1000);
+        }
     }
 };
 
@@ -150,40 +240,7 @@ document.getElementById("btn_op_clear").onclick = function() {
     b = '';
     selectedOperation = null;
     expressionResult = '';
-    accumulator = 0;
     updateDisplay('0');
-};
-
-
-document.getElementById("btn_change_color").onclick = function() {
-    const colors = document.body.classList.contains('light-theme')
-        ? ['#f5f9ff', '#e8f4f8', '#f0f0fa', '#faf0e6', '#f0f5e8']
-        : ['#0a0f1e', '#1e3a3a', '#2d1b3a', '#3a2b1b', '#1e2b3a'];
-    document.body.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-};
-
-
-document.getElementById("btn_change_result_color").onclick = function() {
-    const colors = document.body.classList.contains('light-theme')
-        ? ['#0b5e5e', '#8a4f2c', '#4a2c8a', '#8a2c4a', '#2c6b8a']
-        : ['#6df0a0', '#f0a06d', '#a06df0', '#f06d6d', '#6dd0f0'];
-    outputElement.style.color = colors[Math.floor(Math.random() * colors.length)];
-};
-
-
-document.getElementById("btn_accum_plus").onclick = function() {
-    if (a !== '') {
-        accumulator += Number(a);
-        alert(`Аккумулятор M+ = ${accumulator}`);
-    }
-};
-
-
-document.getElementById("btn_accum_minus").onclick = function() {
-    if (a !== '') {
-        accumulator -= Number(a);
-        alert(`Аккумулятор M- = ${accumulator}`);
-    }
 };
 
 
@@ -191,24 +248,43 @@ document.getElementById("btn_op_equal").onclick = function() {
     if (a === '' || b === '' || !selectedOperation)
         return;
 
+    let numA = Number(a);
+    let numB = Number(b);
+
     switch(selectedOperation) {
         case 'x':
-            expressionResult = Number(a) * Number(b);
+            expressionResult = numA * numB;
             break;
         case '+':
-            expressionResult = Number(a) + Number(b);
+            expressionResult = numA + numB;
             break;
         case '-':
-            expressionResult = Number(a) - Number(b);
+            expressionResult = numA - numB;
             break;
         case '/':
-            expressionResult = Number(a) / Number(b);
+            if (numB === 0) {
+                updateDisplay('Ошибка');
+                setTimeout(() => {
+                    updateDisplay(a);
+                }, 1000);
+                return;
+            }
+            expressionResult = numA / numB;
             break;
         default:
             break;
     }
 
-    a = expressionResult.toString();
+    if (typeof expressionResult === 'number') {
+        if (Number.isInteger(expressionResult)) {
+            a = expressionResult.toString();
+        } else {
+            a = parseFloat(expressionResult.toFixed(10)).toString();
+        }
+    } else {
+        a = expressionResult.toString();
+    }
+
     lastResult = expressionResult;
     b = '';
     selectedOperation = null;
