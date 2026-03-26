@@ -1,0 +1,196 @@
+
+:root {
+    --bg-color: #0a0f1e;
+    --calc-bg: #1e2434;
+    --result-bg: #2a2f42;
+    --result-color: #6df0a0;
+    --btn-bg: #2d3347;
+    --btn-color: #e0e0e0;
+    --btn-hover: #3d445b;
+    --btn-active: #4a526b;
+    --border-color: #3a4055;
+    --text-color: #cfd2dc;
+    --accent-color: #5f9ea0;
+    --font-family: 'Courier New', monospace;
+    --fw-normal: 400;
+    --fw-bold: 700;
+    --fw-thin: 300;
+}
+
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bg-color);
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="120" height="120" opacity="0.15"><rect width="100" height="100" fill="none" /><path d="M10 10 L90 10 L90 90 L10 90 Z" stroke="%23ffffff" stroke-width="1.2" fill="none" stroke-dasharray="4 4"/><circle cx="30" cy="30" r="6" fill="%23ffffff" /><circle cx="70" cy="30" r="6" fill="%23ffffff" /><circle cx="30" cy="70" r="6" fill="%23ffffff" /><circle cx="70" cy="70" r="6" fill="%23ffffff" /><path d="M30 30 L70 70 M70 30 L30 70" stroke="%23ffffff" stroke-width="1" opacity="0.5" /></svg>');
+    background-repeat: repeat;
+    font-family: var(--font-family);
+    color: var(--text-color);
+}
+
+
+.calculator {
+    background-color: var(--calc-bg);
+    border: 2px solid var(--border-color);
+    padding: 20px;
+    width: 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+
+#result {
+    background-color: var(--result-bg);
+    color: var(--result-color);
+    font-size: 3.2rem;
+    font-weight: var(--fw-bold);
+    padding: 15px 15px;
+    text-align: right;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    min-height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    word-break: break-all;
+}
+
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.button-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+
+button {
+    background-color: var(--btn-bg);
+    color: var(--btn-color);
+    border: 1px solid var(--border-color);
+    padding: 15px 0;
+    font-size: 1.6rem;
+    font-family: inherit;
+    font-weight: var(--fw-bold);
+    border-radius: 0;
+    cursor: pointer;
+    transition: background-color 0.15s;
+    position: relative;
+}
+
+
+button::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 8px;
+    height: 8px;
+    border-radius: 0;
+    background-color: var(--accent-color);
+    opacity: 0.9;
+    box-shadow: 0 0 6px currentColor;
+}
+
+.button-row:nth-child(1) button::after { background-color: #ff6b6b; }
+.button-row:nth-child(2) button::after { background-color: #4ecdc4; }
+.button-row:nth-child(3) button::after { background-color: #ffe66d; }
+.button-row:nth-child(4) button::after { background-color: #c7b9ff; }
+.button-row:nth-child(5) button::after { background-color: #f8c7a2; }
+
+
+button:hover {
+    background-color: var(--btn-hover);
+}
+
+
+.extra-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 5px;
+    align-items: center;
+}
+
+
+.extra-controls a,
+.extra-controls select {
+    padding: 8px 12px;
+    background-color: var(--btn-bg);
+    color: var(--btn-color);
+    border: 1px solid var(--border-color);
+    font-family: inherit;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 0;
+    font-weight: var(--fw-normal);
+    display: inline-block;
+}
+
+.extra-controls a {
+    display: inline-block;
+}
+
+.extra-controls select {
+    background-color: var(--btn-bg);
+    color: var(--btn-color);
+    padding: 8px;
+    min-width: 150px;
+}
+
+.dropdown-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+details {
+    background-color: var(--btn-bg);
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 0.95rem;
+}
+
+summary {
+    font-weight: var(--fw-bold);
+    cursor: pointer;
+}
+
+
+.goal {
+    background-color: var(--btn-bg);
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 0.95rem;
+}
+
+mark {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+    padding: 2px 6px;
+    font-weight: var(--fw-bold);
+}
+
+
+.footer-note {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 0.85rem;
+    font-weight: var(--fw-thin);
+    border-top: 1px solid var(--border-color);
+    padding-top: 12px;
+}
