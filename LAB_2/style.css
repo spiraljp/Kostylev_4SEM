@@ -144,6 +144,7 @@ button::after {
 .button-row:nth-child(4) button::after { background-color: #c7b9ff; }
 .button-row:nth-child(5) button::after { background-color: #f8c7a2; }
 .button-row:nth-child(6) button::after { background-color: #a2d6f8; }
+.button-row:nth-child(7) button::after { background-color: #fa00d0; }
 
 
 .light-theme .button-row:nth-child(1) button::after { background-color: #f28b82; }
@@ -152,6 +153,8 @@ button::after {
 .light-theme .button-row:nth-child(4) button::after { background-color: #d7aefb; }
 .light-theme .button-row:nth-child(5) button::after { background-color: #f9cb8b; }
 .light-theme .button-row:nth-child(6) button::after { background-color: #aecbfa; }
+.light-theme .button-row:nth-child(7) button::after { background-color: #df6db7; }
+
 
 button:hover {
     background-color: var(--btn-hover);
