@@ -44,7 +44,7 @@ export class TasksPage {
                     </div>
                     <div class="card-body">
                         <div id="three-container" style="width:100%; height:400px; background:#1a1a2e; border-radius:8px;"></div>
-                        <p class="text-muted small mt-2">🖱️ Мышь: вращение | Правая кнопка: панорама | Колёсико: масштаб</p>
+                        <p class="text-muted small mt-2"> Мышь: вращение | Правая кнопка: панорама | Колёсико: масштаб</p>
                     </div>
                 </div>
             </div>
@@ -117,15 +117,12 @@ export class TasksPage {
             }
         });
 
-        // Инициализация 3D-модели
         const threeContainer = document.getElementById('three-container');
         if (threeContainer) {
-            // Путь к модели: папка models в корне проекта, файл server.glb
             this.threeViewer = new ThreeViewer(threeContainer, 'models/server.glb');
             window.addEventListener('resize', () => this.threeViewer?.resize());
         }
 
-        // Обработчик кнопки "На главную" – очищаем 3D-ресурсы
         document.getElementById('back-to-main').addEventListener('click', () => {
             if (this.threeViewer) {
                 this.threeViewer.dispose();
