@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "title": "Анализ данных погоды",
+    "description": "Обработка спутниковых снимков для прогноза погоды",
+    "priority": 5,
+    "status": "pending"
+  },
+  {
+    "id": 2,
+    "title": "Моделирование климата",
+    "description": "Запуск модели MPI-ESM на 100 узлах",
+    "priority": 8,
+    "status": "running"
+  },
+  {
+    "id": 3,
+    "title": "Рендеринг видео",
+    "description": "Покадровая обработка 4K-видео",
+    "priority": 3,
+    "status": "completed"
+  },
+  {
+    "id": 4,
+    "title": "Вычисление траекторий",
+    "description": "Расчёт орбит для группировки спутников",
+    "priority": 10,
+    "status": "pending"
+  }
+]
