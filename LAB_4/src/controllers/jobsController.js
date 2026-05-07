@@ -16,13 +16,13 @@ const getJobById = (req, res) => {
 };
 
 const createJob = (req, res) => {
-    const { title, description, priority, status } = req.body;
+    const { title, description, priority, status, price} = req.body;
 
     if (!title || !description || priority === undefined || !status) {
-        return res.status(400).json({ error: 'Все поля (title, description, priority, status) обязательны' });
+        return res.status(400).json({ error: 'Все поля (title, description, priority, status, price) обязательны' });
     }
 
-    const newJob = jobsService.create({ title, description, priority, status });
+    const newJob = jobsService.create({ title, description, priority, status, price});
     res.status(201).json(newJob);
 };
 
