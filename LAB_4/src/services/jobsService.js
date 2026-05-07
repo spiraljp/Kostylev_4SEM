@@ -5,8 +5,6 @@ let dataFilePath;
 const init = (filePath) => {
     dataFilePath = filePath;
 };
-
-// Получить все задания с возможной фильтрацией по статусу
 const findAll = (status) => {
     const jobs = fileService.readData(dataFilePath);
     if (status) {
@@ -34,7 +32,6 @@ const update = (id, jobData) => {
     const index = jobs.findIndex(j => j.id === id);
     if (index === -1) return null;
 
-    // Обновляем только переданные поля
     jobs[index] = { ...jobs[index], ...jobData };
     fileService.writeData(dataFilePath, jobs);
     return jobs[index];
