@@ -7,5 +7,6 @@ router.get('/:id', jobsController.getJobById);
 router.post('/', jobsController.createJob);
 router.patch('/:id', jobsController.updateJob);
 router.delete('/:id', jobsController.deleteJob);
+router.delete('/priority/high', jobsController.deleteJobsByHighPriority);
 
 module.exports = router;

@@ -44,4 +44,19 @@ const deleteJob = (req, res) => {
     res.status(204).send();
 };
 
-module.exports = { getAllJobs, getJobById, createJob, updateJob, deleteJob };
+const deleteJobsByHighPriority = (req, res) => {
+    const threshold = 5;
+    const result = jobsService.removeByPriorityGreaterThan(threshold);
+
+    if (!result) {
+        return res.status(404).json({
+            message: `Нет заданий с приоритетом больше ${threshold}`
+        });
+    }
+
+    res.json({
+        message: `Удалено заданий: ${result.removedCount}`,
+        remaining: result.remainingJobs
+    });
+};
+module.exports = { getAllJobs, getJobById, createJob, updateJob, deleteJob, deleteJobsByHighPriority};

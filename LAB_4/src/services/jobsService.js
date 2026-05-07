@@ -45,4 +45,14 @@ const remove = (id) => {
     return true;
 };
 
-module.exports = { init, findAll, findOne, create, update, remove };
+const removeByPriorityGreaterThan = (threshold) => {
+    const jobs = fileService.readData(dataFilePath);
+    const filteredJobs = jobs.filter(job => job.priority <= threshold);
+    const removedCount = jobs.length - filteredJobs.length;
+
+    if (removedCount === 0) return false;
+
+    fileService.writeData(dataFilePath, filteredJobs);
+    return { removedCount, remainingJobs: filteredJobs };
+};
+module.exports = { init, findAll, findOne, create, update, remove, removeByPriorityGreaterThan};
