@@ -21,11 +21,11 @@ class JobUrls {
         return `${this.baseUrl}/jobs`;
     }
 
-    removeJobById(id) {
+    updateJobById(id) {
         return `${this.baseUrl}/jobs/${id}`;
     }
 
-    updateJobById(id) {
+    removeJobById(id) {
         return `${this.baseUrl}/jobs/${id}`;
     }
 }
