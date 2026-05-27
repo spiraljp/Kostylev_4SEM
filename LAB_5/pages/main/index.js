@@ -48,7 +48,7 @@ export class MainPage {
                 this.cardsRoot.innerHTML = `
                     <div class="col-12">
                         <div class="alert alert-danger">
-                            Не удалось загрузить данные. Проверьте сервер 4-й лабораторной и CORS Unblock.
+                            Не удалось загрузить данные.
                         </div>
                     </div>
                 `;
