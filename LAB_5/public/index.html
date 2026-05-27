@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Grid System Planner</title>
+    <style>
+        :root {
+            --grid-blue: #5a6e7a;
+            --grid-blue-dark: #4a5a66;
+            --grid-green: #5a7a6e;
+            --grid-yellow: #8a7a5a;
+            --grid-red: #8a5e6a;
+            --grid-panel: #d6dee3;
+        }
+
+        body {
+            background: #eef2f4;
+            color: #26323d;
+            font-size: 17px;
+        }
+
+        .app-shell {
+            padding-top: 32px;
+            padding-bottom: 48px;
+        }
+
+        .page-heading {
+            margin-bottom: 28px;
+        }
+
+        .card,
+        .btn,
+        .form-control {
+            border-radius: 4px;
+        }
+
+        .grid-title {
+            color: #2a3a4a;
+            font-size: 36px;
+            font-weight: 700;
+        }
+
+        .grid-subtitle {
+            max-width: 720px;
+            margin: 8px auto 0;
+            font-size: 19px;
+            line-height: 1.5;
+        }
+
+        .toolbar {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+
+        .grid-btn {
+            background-color: var(--grid-blue);
+            border-color: var(--grid-blue-dark);
+            color: white;
+            min-width: 150px;
+            padding: 11px 18px;
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        .grid-btn:hover {
+            background-color: var(--grid-blue-dark);
+            border-color: var(--grid-blue-dark);
+            color: white;
+        }
+
+        .grid-card {
+            border-left: 3px solid var(--grid-blue);
+            box-shadow: 0 4px 12px rgba(42, 58, 74, 0.08);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .grid-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(42, 58, 74, 0.12);
+        }
+
+        .grid-card .card-header {
+            background-color: #f8fafb;
+            padding: 14px 18px;
+            font-size: 17px;
+        }
+
+        .grid-card .card-body {
+            padding: 20px;
+        }
+
+        .job-card-title {
+            min-height: 54px;
+            margin-bottom: 10px;
+            font-size: 22px;
+            color: #2a3a4a;
+        }
+
+        .job-card-description {
+            min-height: 84px;
+            font-size: 17px;
+            line-height: 1.45;
+        }
+
+        .job-card-meta {
+            min-height: 28px;
+        }
+
+        .progress {
+            height: 24px;
+            background-color: #e4eaee;
+            font-size: 14px;
+        }
+
+        .grid-panel {
+            background-color: var(--grid-panel);
+            border-color: #b0bec9;
+            color: #2a3a4a;
+        }
+
+        .filter-panel {
+            max-width: 820px;
+            margin: 0 auto 26px;
+            padding: 18px;
+            background: #ffffff;
+            border: 1px solid #d7e0e6;
+            border-radius: 4px;
+            box-shadow: 0 3px 10px rgba(42, 58, 74, 0.05);
+        }
+
+        .cards-grid {
+            row-gap: 22px;
+        }
+
+        .form-shell {
+            max-width: 820px;
+            margin: 0 auto;
+        }
+
+        .form-shell .card-body {
+            padding: 24px;
+        }
+
+        .form-control {
+            min-height: 46px;
+            font-size: 17px;
+        }
+
+        .form-label {
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        .badge {
+            font-size: 14px;
+            padding: 6px 8px;
+        }
+
+        .form-actions {
+            margin-bottom: 18px;
+        }
+
+        @media (max-width: 576px) {
+            .grid-btn {
+                width: 100%;
+            }
+        }
+    </style>
+    <script type="importmap">
+        {
+            "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/examples/jsm/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+  <script type="module" crossorigin src="/assets/index-BZoIZkhg.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-BL5QWnkG.css">
+</head>
+<body>
+    <div id="root"></div>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

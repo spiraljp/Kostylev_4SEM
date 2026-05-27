@@ -1,4 +1,5 @@
 import { ThreeViewer } from '../../components/three-viewer/index.js';
+import modelUrl from '../../models/server.glb?url';
 
 export class TasksPage {
     constructor(parent) {
@@ -119,7 +120,7 @@ export class TasksPage {
 
         const threeContainer = document.getElementById('three-container');
         if (threeContainer) {
-            this.threeViewer = new ThreeViewer(threeContainer, 'models/server.glb');
+            this.threeViewer = new ThreeViewer(threeContainer, modelUrl);
             window.addEventListener('resize', () => this.threeViewer?.resize());
         }
 
