@@ -1,111 +1,36 @@
-# Лабораторная работа №4. REST API на Express.js
+# Лабораторная работа №4. Создание бэкенда на Express.js
 
 ## Постановка задачи
 
-Цель лабораторной работы — реализовать на `Node.js` собственный веб-сервис для API. Данные должны храниться в `json`-файле. Необходимо протестировать сервис через Postman или Insomnia и реализовать основные методы работы с карточками: получение списка, получение одной записи, добавление, редактирование и удаление.
+**Задача** — разработать REST API сервис для карточек заданий grid-системы. Данные должны храниться в `json`-файле.
 
-Индивидуальная тема: **Grid-система планирования заданий**.
+Необходимо реализовать методы:
 
-В рамках темы реализован API для работы с заданиями grid-системы.
+- `GET /jobs` — получение всех карточек заданий;
+- `GET /jobs/:id` — получение карточки задания по ID;
+- `POST /jobs` — создание новой карточки задания;
+- `PATCH /jobs/:id` — обновление карточки задания по ID;
+- `DELETE /jobs/:id` — удаление карточки задания по ID.
 
-## Выполнение
+Также необходимо протестировать работу сервиса через Postman или Insomnia.
 
-В ходе работы был разработан backend-сервис на `Express.js`. Сервер хранит данные о заданиях в файле `src/data/jobs.json`.
+## Тема
 
-Каждая запись содержит следующие поля:
+**Grid-система планирования заданий**
 
-- `id` — уникальный идентификатор задания;
+В рамках выбранной темы карточка описывает задание, которое может быть отправлено на выполнение в grid-систему.
+
+Карточка задания содержит поля:
+
+- `id` — идентификатор задания;
 - `title` — название задания;
 - `description` — описание задания;
 - `priority` — приоритет задания;
 - `status` — статус задания;
 - `price` — стоимость выполнения задания.
 
-Для разделения логики проект разбит на маршруты, контроллеры и сервисы:
-
-- маршруты принимают HTTP-запросы;
-- контроллеры обрабатывают параметры запроса и формируют ответ;
-- сервисы выполняют работу с данными;
-- отдельный файловый сервис отвечает за чтение и запись JSON-файла.
-
-## Реализованные методы API
-
-### Получение всех заданий
-
-Метод:
-
-    GET /jobs
-
-Описание: возвращает список всех заданий из файла `jobs.json`.
-
-Также поддерживается фильтрация по статусу:
-
-    GET /jobs?status=pending
-
-### Получение задания по ID
-
-Метод:
-
-    GET /jobs/:id
-
-Описание: возвращает одно задание по его идентификатору. Если задание не найдено, сервер возвращает ошибку `404`.
-
-### Создание нового задания
-
-Метод:
-
-    POST /jobs
-
-Описание: создает новую запись в списке заданий. Данные передаются в теле запроса в формате JSON.
-
-Пример тела запроса:
-
-    {
-      "title": "Задание 1",
-      "description": "Вычисление",
-      "priority": 6,
-      "status": "pending",
-      "price": 200
-    }
-
-Если обязательные поля не переданы, сервер возвращает ошибку `400`.
-
-### Редактирование задания
-
-Метод:
-
-    PATCH /jobs/:id
-
-Описание: изменяет данные существующего задания по ID. Если задание не найдено, сервер возвращает ошибку `404`.
-
-Пример тела запроса:
-
-    {
-      "status": "completed",
-      "priority": 3
-    }
-
-### Удаление задания
-
-Метод:
-
-    DELETE /jobs/:id
-
-Описание: удаляет задание по ID. При успешном удалении сервер возвращает статус `204`.
-
-### Дополнительный метод
-
-Метод:
-
-    DELETE /jobs/priority/high
-
-Описание: удаляет задания с приоритетом выше `5`.
-
-После выполнения запроса сервер возвращает количество удаленных заданий и список оставшихся записей.
-
 ## Структура проекта
 
-![Структура проекта](readme_images/structure.png)
 
     LAB_4/
     ├── src/
@@ -122,59 +47,11 @@
     ├── package.json
     └── package-lock.json
 
-## Описание основных файлов
+В проекте используется разделение на маршруты, контроллеры и сервисы.
 
-`src/index.js` — точка входа в приложение. В файле создается Express-сервер, подключается обработка JSON, логирование запросов, маршруты `/jobs`, обработка ошибки `404` и запуск сервера на порту `3000`.
+Файл `src/index.js` отвечает за создание сервера, подключение middleware, маршрутов и запуск приложения.
 
-`src/routes/jobs.js` — файл маршрутов. Здесь описаны URL и HTTP-методы для работы с заданиями.
-
-`src/controllers/jobsController.js` — контроллеры, которые принимают запросы, получают параметры, вызывают сервисы и отправляют HTTP-ответ.
-
-`src/services/jobsService.js` — сервис для работы с заданиями. Реализует поиск, создание, обновление и удаление записей.
-
-`src/services/fileService.js` — сервис для чтения и записи данных в JSON-файл.
-
-`src/data/jobs.json` — файл с данными о заданиях grid-системы.
-
-`package.json` — файл с описанием проекта, зависимостями и командами запуска.
-
-## Фрагменты реализации
-
-Подключение маршрутов в `src/index.js`:
-
-    const express = require('express');
-    const path = require('path');
-    const jobsRouter = require('./routes/jobs');
-    const jobsService = require('./services/jobsService');
-
-    const app = express();
-    const PORT = 3000;
-    const DATA_FILE_PATH = path.join(__dirname, 'data/jobs.json');
-
-    jobsService.init(DATA_FILE_PATH);
-
-    app.use(express.json());
-
-    app.use((req, res, next) => {
-        console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
-        next();
-    });
-
-    app.use('/jobs', jobsRouter);
-
-    app.use((req, res) => {
-        res.status(404).json({ error: 'Маршрут не найден' });
-    });
-
-    app.listen(PORT, () => {
-        console.log(`Сервер запущен: http://localhost:${PORT}`);
-    });
-
-Описание маршрутов в `src/routes/jobs.js`:
-
-    const express = require('express');
-    const router = express.Router();
-    const jobsController = require('../controllers/jobsController');
+Файл `src/routes/jobs.js` содержит маршруты API:
 
     router.get('/', jobsController.getAllJobs);
     router.get('/:id', jobsController.getJobById);
@@ -183,89 +60,140 @@
     router.delete('/:id', jobsController.deleteJob);
     router.delete('/priority/high', jobsController.deleteJobsByHighPriority);
 
-    module.exports = router;
+Файл `src/controllers/jobsController.js` обрабатывает запросы и формирует ответы.
 
-Создание нового задания в `jobsController.js`:
+Файл `src/services/jobsService.js` содержит основную логику работы с заданиями.
 
-    const createJob = (req, res) => {
-        const { title, description, priority, status, price } = req.body;
-
-        if (!title || !description || priority === undefined || !status) {
-            return res.status(400).json({
-                error: 'Все поля (title, description, priority, status, price) обязательны'
-            });
-        }
-
-        const newJob = jobsService.create({
-            title,
-            description,
-            priority,
-            status,
-            price
-        });
-
-        res.status(201).json(newJob);
-    };
-
-Добавление записи в `jobsService.js`:
-
-    const create = (jobData) => {
-        const jobs = fileService.readData(dataFilePath);
-        const newId = jobs.length > 0 ? Math.max(...jobs.map(j => j.id)) + 1 : 1;
-        const newJob = { id: newId, ...jobData };
-
-        jobs.push(newJob);
-        fileService.writeData(dataFilePath, jobs);
-
-        return newJob;
-    };
+Файл `src/services/fileService.js` отвечает за чтение и запись данных в `json`-файл.
 
 ## Результат работы
 
-Запуск сервера:
+### GET /jobs — получение всех карточек
 
-![Запуск сервера](readme_images/server.png)
+Метод возвращает список всех заданий из файла `jobs.json`.
 
-Получение всех заданий:
+<img width="1266" height="1025" alt="image" src="https://github.com/user-attachments/assets/fa7ed0b8-c1a7-4030-8d61-7fc8e21060e6" />
 
-![GET all](readme_images/get_all.png)
+### GET /jobs/:id — получение карточки по ID
 
-Получение задания по ID:
+Метод возвращает одно задание по его идентификатору.
 
-![GET one](readme_images/get_one.png)
+Если задание не найдено, возвращается ошибка `404`.
 
-Создание нового задания:
+<img width="1202" height="298" alt="image" src="https://github.com/user-attachments/assets/15b5bad9-bc74-409d-a8a1-a2af3be7d6dd" />
 
-![POST](readme_images/post.png)
+### POST /jobs — создание новой карточки
 
-Редактирование задания:
+Метод создает новую карточку задания.
 
-![PATCH](readme_images/patch.png)
+Пример тела запроса:
 
-Удаление задания:
+    {
+      "title": "Задание 1",
+      "description": "Вычисление",
+      "priority": 6,
+      "status": "pending",
+      "price": 200
+    }
 
-![DELETE](readme_images/delete.png)
+Если обязательные поля не переданы, сервер возвращает ошибку `400`.
 
-Фильтрация заданий по статусу:
+<img width="1212" height="986" alt="image" src="https://github.com/user-attachments/assets/7e516219-0e57-437f-91dd-3d2af13e2e06" />
 
-![Фильтрация](readme_images/filter.png)
+### PATCH /jobs/:id — обновление карточки
 
-Дополнительный метод удаления заданий с высоким приоритетом:
+Метод обновляет данные существующего задания по ID.
 
-![Удаление по приоритету](readme_images/delete_priority.png)
+Пример тела запроса:
 
-## Запуск проекта
+    {
+      "status": "completed",
+      "priority": 3
+    }
+
+Если задание не найдено, возвращается ошибка `404`.
+
+<img width="1217" height="594" alt="image" src="https://github.com/user-attachments/assets/1ac4d993-7da4-414b-818c-2994584e5149" />
+
+### DELETE /jobs/:id — удаление карточки
+
+Метод удаляет задание по ID.
+
+При успешном удалении сервер возвращает статус `204`.
+
+<img width="1197" height="598" alt="image" src="https://github.com/user-attachments/assets/a946bb66-a87a-4d5f-89b0-8f6bb4857587" />
+
+### GET /jobs?status=pending — фильтрация по статусу
+
+Также реализована фильтрация заданий по статусу.
+
+Например, запрос:
+
+    GET /jobs?status=pending
+
+возвращает только задания со статусом `pending`.
+
+<img width="1213" height="962" alt="image" src="https://github.com/user-attachments/assets/1ec0c369-ec58-4085-8b59-fc7d527d0e57" />
+
+## Дополнительное задание
+
+Дополнительно был реализован метод удаления заданий с высоким приоритетом:
+
+    DELETE /jobs/priority/high
+
+Метод удаляет все задания, у которых значение `priority` больше `5`.
+
+Фрагмент реализации:
+
+    const deleteJobsByHighPriority = (req, res) => {
+        const threshold = 5;
+        const result = jobsService.removeByPriorityGreaterThan(threshold);
+
+        if (!result) {
+            return res.status(404).json({
+                message: `Нет заданий с приоритетом больше ${threshold}`
+            });
+        }
+
+        res.json({
+            message: `Удалено заданий: ${result.removedCount}`,
+            remaining: result.remainingJobs
+        });
+    };
+
+Функция в сервисе читает данные из файла, фильтрует задания и записывает обновленный список обратно в `jobs.json`.
+
+    const removeByPriorityGreaterThan = (threshold) => {
+        const jobs = fileService.readData(dataFilePath);
+        const filteredJobs = jobs.filter(job => job.priority <= threshold);
+        const removedCount = jobs.length - filteredJobs.length;
+
+        if (removedCount === 0) return null;
+
+        fileService.writeData(dataFilePath, filteredJobs);
+
+        return {
+            removedCount,
+            remainingJobs: filteredJobs
+        };
+    };
+
+Результат работы дополнительного метода:
+
+<img width="1217" height="507" alt="image" src="https://github.com/user-attachments/assets/0bc4d25e-96e2-4aa0-ab62-8b186c5af927" />
+
+## Запуск сервера
 
 Для запуска проекта необходимо перейти в папку `LAB_4` и установить зависимости:
 
     cd LAB_4
     npm install
 
-Запуск сервера:
+Запуск сервера в режиме разработки:
 
     npm run dev
 
-Или обычный запуск через Node.js:
+Обычный запуск сервера:
 
     npm start
 
@@ -273,25 +201,14 @@
 
     http://localhost:3000
 
-## .gitignore
+Пример запуска сервера:
 
-Для данной лабораторной работы используется `.gitignore`, который исключает зависимости, логи, локальные файлы окружения и настройки редакторов:
-
-    node_modules/
-    logs/
-    *.log
-    npm-debug.log*
-    .env
-    .env.*
-    .postman/
-    postman/
-    .DS_Store
-    Thumbs.db
-    .vscode/
-    .idea/
+<img width="605" height="393" alt="image" src="https://github.com/user-attachments/assets/4c7b6b0b-6172-46a7-9cb5-f88564272938" />
 
 ## Вывод
 
-В ходе лабораторной работы был реализован REST API на `Express.js` для работы с заданиями grid-системы. Были изучены маршруты, контроллеры, сервисы, хранение данных в JSON-файле, обработка HTTP-методов и кодов состояния.
+В ходе лабораторной работы был разработан REST API сервис на `Express.js` для работы с карточками заданий grid-системы.
 
-Сервис был протестирован через Postman: проверены получение списка записей, получение записи по ID, создание, редактирование, удаление и дополнительный метод удаления заданий с высоким приоритетом.
+Были реализованы методы получения списка заданий, получения задания по ID, создания, редактирования и удаления. Данные сохраняются в `json`-файле.
+
+Также был реализован дополнительный метод удаления заданий с высоким приоритетом. Работа всех методов была проверена через Postman.
