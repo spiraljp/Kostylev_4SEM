@@ -1,4 +1,4 @@
-<img width="400" height="604" alt="image" src="https://github.com/user-attachments/assets/fe590c1a-fa1b-4abc-be74-21e8ab3649c5" /># Лабораторная работа №2. Калькулятор на JavaScript
+# Лабораторная работа №2. Калькулятор на JavaScript
 
 ## Постановка задачи
 
@@ -12,7 +12,72 @@
 
 Основная логика вынесена в `script.js`. Выражение хранится в переменной `expression`, а результат выводится в элемент `#result`.
 
-Также добавлены дополнительные операции, связанные с вычислениями и планированием нагрузки.
+Также добавлены дополнительные операции: извлечение квадратного корня, возведение числа в квадрат и вычисление факториала.
+
+### Реализация дополнительных операций
+
+Кнопка извлечения квадратного корня получает последнее введенное число, проверяет, что оно неотрицательное, заменяет его на результат `Math.sqrt()` и обновляет экран калькулятора.
+
+    document.getElementById("btn_op_sqrt").onclick = function() {
+        if (expression.length === 0) return;
+
+        const match = expression.match(/(\d+(?:\.\d+)?)(?![\(\)\+\-\x\/\*])[^\(\)\+\-\x\/\*]*$/);
+        if (match) {
+            const lastNumber = parseFloat(match[1]);
+            if (lastNumber >= 0) {
+                const newNumber = roundResult(Math.sqrt(lastNumber)).toString();
+                const lastNumberIndex = expression.lastIndexOf(match[1]);
+                expression = expression.substring(0, lastNumberIndex) + newNumber + expression.substring(lastNumberIndex + match[1].length);
+                updateDisplay(expression);
+            } else {
+                updateDisplay('Ошибка');
+            }
+        }
+    };
+
+Кнопка возведения в квадрат также работает с последним числом в выражении и заменяет его на произведение числа самого на себя.
+
+    document.getElementById("btn_op_square").onclick = function() {
+        if (expression.length === 0) return;
+
+        const match = expression.match(/(\d+(?:\.\d+)?)(?![\(\)\+\-\x\/\*])[^\(\)\+\-\x\/\*]*$/);
+        if (match) {
+            const lastNumber = parseFloat(match[1]);
+            const newNumber = roundResult(lastNumber * lastNumber).toString();
+            const lastNumberIndex = expression.lastIndexOf(match[1]);
+            expression = expression.substring(0, lastNumberIndex) + newNumber + expression.substring(lastNumberIndex + match[1].length);
+            updateDisplay(expression);
+        }
+    };
+
+Для вычисления факториала реализована отдельная функция `factorial(n)`. Операция применяется только к целым неотрицательным числам, а слишком большие значения ограничены, чтобы избежать переполнения.
+
+    function factorial(n) {
+        if (n < 0) return NaN;
+        if (n === 0 || n === 1) return 1;
+        let result = 1;
+        for (let i = 2; i <= n; i++) {
+            result *= i;
+        }
+        return result;
+    }
+
+    document.getElementById("btn_op_fact").onclick = function() {
+        if (expression.length === 0) return;
+
+        const match = expression.match(/(\d+(?:\.\d+)?)(?![\(\)\+\-\x\/\*])[^\(\)\+\-\x\/\*]*$/);
+        if (match) {
+            const lastNumber = parseFloat(match[1]);
+            if (Number.isInteger(lastNumber) && lastNumber >= 0 && lastNumber <= 170) {
+                const newNumber = roundResult(factorial(lastNumber)).toString();
+                const lastNumberIndex = expression.lastIndexOf(match[1]);
+                expression = expression.substring(0, lastNumberIndex) + newNumber + expression.substring(lastNumberIndex + match[1].length);
+                updateDisplay(expression);
+            } else {
+                updateDisplay('Ошибка');
+            }
+        }
+    };
 
 ## Результат
 
@@ -20,8 +85,7 @@
 
 <img width="963" height="1031" alt="image" src="https://github.com/user-attachments/assets/2a217849-cc65-4197-9c0c-0d6b288d9c6c" />
 
-
-Пример работы индивидуальной операции(добавлены кнопки периода возведения в квадратную степерь и извлечение корня
+Пример работы индивидуальных операций: добавлены кнопки возведения в квадрат, вычисления факториала и извлечения квадратного корня.
 
 <img width="457" height="602" alt="image" src="https://github.com/user-attachments/assets/7d29f775-d8ed-422b-8e1e-d8618e7b362e" />
 
